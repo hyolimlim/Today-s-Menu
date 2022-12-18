@@ -1,6 +1,6 @@
 import React from "react";
 
-function RecipeList() {
+function RecipeList(recipe) {
   return (
     <div className="recipelist">
       <div className="recipe"></div>

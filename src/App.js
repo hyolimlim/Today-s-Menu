@@ -11,12 +11,14 @@ function App() {
   return (
     <ErrorBoundary FallbackComponent={<Error />}>
       <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/:id" element={<RecipeDetail />} />
-          <Route element={<Notfound />} />
-        </Routes>
+        <div className="warp">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/:id" element={<RecipeDetail />} />
+            <Route element={<Notfound />} />
+          </Routes>
+        </div>
       </BrowserRouter>
     </ErrorBoundary>
   );
