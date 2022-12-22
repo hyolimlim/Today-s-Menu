@@ -1,11 +1,12 @@
 import React from "react";
+import Recipes from "./Recipes";
 
-function RecipeList({ data }) {
+function RecipeList({ flatRecipeArr }) {
   return (
-    <div className="recipe">
-      <img src={data.ATT_FILE_NO_MAIN} alt="대표 이미지" />
-      <h1>{data.RCP_NM}</h1>
-      <span>{data.RCP_PAT2}</span>
+    <div className="recipelist">
+      {flatRecipeArr?.map((recipe, index) => (
+        <Recipes key={index} data={recipe} index={index} />
+      ))}
     </div>
   );
 }
