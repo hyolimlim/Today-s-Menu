@@ -1,86 +1,60 @@
-import useState from "react";
-import SearchBar from "../../components/SearchBar";
+import React, { useRef, useState, useEffect, useContext } from "react";
+import Search from "./Search";
 import RecipeList from "./RecipeList";
 import "../../styles/Design.scss";
-import useSWRInfinite from "swr/infinite";
-import axios from "axios";
-
-const ACCESS_KEY = "d1f92fd34ae84af7be22";
-
-const fetcher = async (url) => {
-  const res = await fetch(url);
-  return res.json();
-};
-
-const getKey = (pageIndex, prevPageData, food, ingredient) => {
-  let startCount = 1;
-  let endCount = 20;
-
-  if (pageIndex[0] > 0) {
-    startCount += pageIndex[0] * 10;
-    endCount += pageIndex[0] * 10;
-  }
-
-  // if (food !== null) {
-  //   return `http://openapi.foodsafetykorea.go.kr/api/${ACCESS_KEY}/COOKRCP01/json/${startCount}/${endCount}/RCP_NM=당근`;
-  // } else if (ingredient !== null) {
-  //   return `http://openapi.foodsafetykorea.go.kr/api/${ACCESS_KEY}/COOKRCP01/json/${startCount}/${endCount}/RCP_PARTS_DTLS=당근`;
-  // } else {
-  // }
-  return `http://openapi.foodsafetykorea.go.kr/api/${ACCESS_KEY}/COOKRCP01/json/${startCount}/${endCount}`;
-};
+import { useGetData } from "../../hooks/useGetData";
+import { RecipeContext } from "../../store/RecipeProvider";
+import useObserver from "../../hooks/useObserver";
+import { Loading } from "../../assets/Index";
+import { TopIcon } from "../../assets/Index";
+import useScrollToTop from "../../hooks/useScrollToTop";
 
 function Main() {
-  // input값 설정
-  // let food = "메롱";
-  // let ingredient = "하하";
+  const bottomRef = useRef(null);
+  const isIntersectiong = useObserver(bottomRef);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const { data, size, setSize } = useSWRInfinite(
-    (...args) => getKey(...args),
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateFirstPage: false,
-      revalidateOnFocus: false,
+  useEffect(() => {
+    const handleShowButton = () => {
+      if (window.scrollY > 500) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+    window.addEventListener("scroll", handleShowButton);
+    return () => {
+      window.removeEventListener("scroll", handleShowButton);
+    };
+  }, []);
+
+  //데이터 가져오기
+  const { recipe } = useContext(RecipeContext);
+
+  const { setSize, size, isLoading, isNodata, isEndData } = useGetData();
+
+  const { scrollToTop } = useScrollToTop();
+
+  useEffect(() => {
+    if (isIntersectiong && !isLoading && !isNodata & !isEndData) {
+      setSize(() => size + 1);
     }
-  );
-
-  // useEffect(() => {
-  //   if (intersecting) setSize(size + 1);
-  // }, [intersecting]);
-  // console.log(data);
-
-  //데이터에서 레시피 부분 데이터만 추출
-  const RecipeData = data?.map((item) => item.COOKRCP01);
-
-  //레시피 데이터를 하나의 배열로 합침.
-  const mergeRecipeArr = RecipeData?.map((item) => item.row).flat();
-
-  console.log(data);
+  }, [setSize, isIntersectiong, isLoading, isNodata, isEndData]);
 
   return (
     <main className="main">
-      <div className="searchbar">
-        <select>
-          <option value="음식명">음식명</option>
-          <option value="재료명">재료명</option>
-        </select>
-        <div className="searchbar__input">
-          <input
-            className="input"
-            placeholder="궁금한 레시피를 검색해보세요"
-          ></input>
+      <Search />
+      <div className="main__introduce">
+        <h1>레시피 리스트</h1>
+      </div>
+      {isVisible ? (
+        <div className="main__scrollbutton" onClick={scrollToTop}>
+          <TopIcon />
         </div>
-        <div className="searchbar__icon"></div>
-      </div>
-      {/* <button onClick={() => setSize(size + 1)}>Load More</button> */}
-      <div className="introduce">
-        <h1>레시피 전체보기</h1>
-      </div>
-      <div className="recipelist">
-        {mergeRecipeArr?.map((recipe) => (
-          <RecipeList key={recipe.RCP_SEQ} data={recipe} />
-        ))}
+      ) : null}
+      {!isNodata ? <RecipeList flatRecipeArr={recipe} /> : <div>nodata</div>}
+      <div ref={bottomRef} className="loading">
+        {isLoading ? <Loading /> : null}
       </div>
     </main>
   );
