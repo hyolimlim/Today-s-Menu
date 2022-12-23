@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import Search from "./Search";
 import RecipeList from "./RecipeList";
-import "../../styles/Design.scss";
 import { useGetData } from "../../hooks/useGetData";
 import { RecipeContext } from "../../store/RecipeProvider";
 import useObserver from "../../hooks/useObserver";
@@ -13,6 +12,16 @@ function Main() {
   const bottomRef = useRef(null);
   const isIntersectiong = useObserver(bottomRef);
   const [isVisible, setIsVisible] = useState(false);
+  const {
+    setSize,
+    size,
+    recipe,
+    isLoadingData,
+    isNodata,
+    isEndData,
+    isLoading,
+  } = useGetData();
+  const { scrollToTop } = useScrollToTop();
 
   useEffect(() => {
     const handleShowButton = () => {
@@ -28,18 +37,13 @@ function Main() {
     };
   }, []);
 
-  //데이터 가져오기
-  const { recipe } = useContext(RecipeContext);
-
-  const { setSize, size, isLoading, isNodata, isEndData } = useGetData();
-
-  const { scrollToTop } = useScrollToTop();
-
   useEffect(() => {
-    if (isIntersectiong && !isLoading && !isNodata & !isEndData) {
+    if (isIntersectiong && !isLoading & !isEndData) {
       setSize(() => size + 1);
     }
-  }, [setSize, isIntersectiong, isLoading, isNodata, isEndData]);
+  }, [setSize, isIntersectiong, isLoading, isEndData]);
+
+  console.log(isLoading, isEndData, isNodata);
 
   return (
     <main className="main">
@@ -54,7 +58,7 @@ function Main() {
       ) : null}
       {!isNodata ? <RecipeList flatRecipeArr={recipe} /> : <div>nodata</div>}
       <div ref={bottomRef} className="loading">
-        {isLoading ? <Loading /> : null}
+        {!isLoading && !isNodata && !isEndData ? <Loading /> : null}
       </div>
     </main>
   );

@@ -6,65 +6,74 @@ export function useGetData() {
   const ACCESS_KEY = "d1f92fd34ae84af7be22";
   const url = `http://openapi.foodsafetykorea.go.kr/api/${ACCESS_KEY}/COOKRCP01/json`;
 
-  const { recipe, setRecipe } = useContext(RecipeContext);
-
-  const [input, setInput] = useState("");
-  const [selected, setSelected] = useState("");
+  const {
+    recipe,
+    setRecipe,
+    total,
+    setTotal,
+    input,
+    option,
+    isNodata,
+    setIsNodata,
+    isLoadingData,
+    setIsLoadingData,
+    isEndData,
+    setIsEndData,
+  } = useContext(RecipeContext);
 
   const fetcher = async (url) => {
     const res = await fetch(url);
     return res.json();
   };
 
-  const Getquery = (inputData, selectedData) => {
-    setInput(inputData);
-    setSelected(selectedData);
+  const getKey = (pageIndex, previousPageData) => {
+    if (previousPageData && previousPageData.COOKRCP01.row.length === 0)
+      return null;
+
+    const start = pageIndex === 0 ? 0 : pageIndex + pageIndex * 20;
+    const end = (pageIndex + 1) * 20;
+
+    Number(total) - recipe.length < 1
+      ? setIsEndData(true)
+      : setIsEndData(false);
+
+    if (!input) {
+      return `${url}/${start}/${end}`;
+    } else if (input && option && option === "재료명") {
+      return `${url}/${start}/${end}/RCP_PARTS_DTLS=${input}`;
+    } else if (input && option && option === "음식명") {
+      return `${url}/${start}/${end}/RCP_NM=${input}`;
+    }
   };
 
-  const getKey = (pageIndex, prevPageData) => {
-    if (prevPageData && prevPageData?.COOKRCP01.length === 0) return null;
-
-    let startCount = 1;
-    let endCount = 20;
-
-    if (pageIndex > 0) {
-      startCount += pageIndex * 10;
-      endCount += pageIndex * 10;
-    }
-    if (input && selected === "재료명") {
-      return `${url}/${startCount}/${endCount}/RCP_PARTS_DTLS=${input}`;
-    } else if (input && selected === "음식명") {
-      return `${url}/${startCount}/${endCount}/RCP_NM=${input}`;
-    }
-    return `${url}/${startCount}/${endCount}`;
-  };
-
-  const { data, error, size, setSize, isValidating } = useSWRInfinite(
-    getKey,
-    fetcher,
-    {
+  const { data, error, size, setSize, isLoading, isValidating } =
+    useSWRInfinite(getKey, fetcher, {
       revalidateIfStale: false,
       revalidateFirstPage: false,
       revalidateOnFocus: false,
       suspense: true,
-    }
-  );
-
-  //데이터에서 레시피 부분 데이터만 추출
-  const recipeData = data?.map((item) => item.COOKRCP01);
-
-  //레시피 데이터를 하나의 배열로 합침
-  const flatRecipeArr = recipeData?.map((item) => item.row).flat();
+    });
 
   useEffect(() => {
-    setRecipe(flatRecipeArr);
+    const recipeData = data.map((item) => item.COOKRCP01);
+    setRecipe(recipeData?.map((item) => item.row).flat());
+    setTotal(recipeData[0].total_count);
+    setIsNodata(recipeData[0].total_count === "0");
+    setIsLoadingData((!data && !error && input) || isLoading || isValidating);
+    setIsEndData(
+      Number(total) < 10 || recipe.length >= Number(total) ? true : false
+    );
   }, [data]);
 
-  const isNodata = recipeData[0].total_count === "0";
+  console.log(data, recipe.length, Number(total), isEndData);
 
-  const isLoading = (!data && !error) || isValidating;
-
-  const isEndData = flatRecipeArr.length === Number(recipeData[0].total_count);
-
-  return { Getquery, setSize, size, isLoading, isNodata, isEndData };
+  return {
+    setSize,
+    size,
+    recipe,
+    isLoadingData,
+    isNodata,
+    isEndData,
+    isLoading,
+  };
 }
