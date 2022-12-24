@@ -30,12 +30,8 @@ export function useGetData() {
     if (previousPageData && previousPageData.COOKRCP01.row.length === 0)
       return null;
 
-    const start = pageIndex === 0 ? 0 : pageIndex + pageIndex * 20;
-    const end = (pageIndex + 1) * 20;
-
-    Number(total) - recipe.length < 1
-      ? setIsEndData(true)
-      : setIsEndData(false);
+    const start = pageIndex === 0 ? 1 : pageIndex * 8 + 1;
+    const end = pageIndex === 0 ? 8 : pageIndex * 8 + 8;
 
     if (!input) {
       return `${url}/${start}/${end}`;
@@ -60,12 +56,13 @@ export function useGetData() {
     setTotal(recipeData[0].total_count);
     setIsNodata(recipeData[0].total_count === "0");
     setIsLoadingData((!data && !error && input) || isLoading || isValidating);
-    setIsEndData(
-      Number(total) < 10 || recipe.length >= Number(total) ? true : false
-    );
   }, [data]);
 
-  console.log(data, recipe.length, Number(total), isEndData);
+  useEffect(() => {
+    Number(total) - recipe.length < 1
+      ? setIsEndData(true)
+      : setIsEndData(false);
+  }, [recipe]);
 
   return {
     setSize,

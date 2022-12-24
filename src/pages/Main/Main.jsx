@@ -21,6 +21,7 @@ function Main() {
     isEndData,
     isLoading,
   } = useGetData();
+
   const { scrollToTop } = useScrollToTop();
 
   useEffect(() => {
@@ -43,8 +44,6 @@ function Main() {
     }
   }, [setSize, isIntersectiong, isLoading, isEndData]);
 
-  console.log(isLoading, isEndData, isNodata);
-
   return (
     <main className="main">
       <Search />
@@ -52,11 +51,20 @@ function Main() {
         <h1>레시피 리스트</h1>
       </div>
       {isVisible ? (
-        <div className="main__scrollbutton" onClick={scrollToTop}>
+        <div
+          className="main__scrollbutton"
+          onClick={() => {
+            scrollToTop();
+          }}
+        >
           <TopIcon />
         </div>
       ) : null}
-      {!isNodata ? <RecipeList flatRecipeArr={recipe} /> : <div>nodata</div>}
+      {!isNodata ? (
+        <RecipeList flatRecipeArr={recipe} />
+      ) : (
+        <div>데이터가 없습니다.</div>
+      )}
       <div ref={bottomRef} className="loading">
         {!isLoading && !isNodata && !isEndData ? <Loading /> : null}
       </div>
