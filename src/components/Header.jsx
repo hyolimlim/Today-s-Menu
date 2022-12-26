@@ -11,10 +11,10 @@ function Header() {
       <div
         className="logo"
         onClick={() => {
-          navigate(-1);
+          window.reload();
         }}
       >
-        <img src={Logo} alt="logo" />
+        <img src={Logo} alt="logo" width="150px" height="45px" />
       </div>
     </header>
   );

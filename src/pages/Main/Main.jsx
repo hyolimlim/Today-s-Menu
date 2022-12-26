@@ -1,11 +1,11 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, Suspense } from "react";
 import Search from "./Search";
-import RecipeList from "./RecipeList";
 import { useGetData } from "../../hooks/useGetData";
 import useObserver from "../../hooks/useObserver";
 import { Loading } from "../../assets/Index";
 import { TopIcon } from "../../assets/Index";
 import useScrollToTop from "../../hooks/useScrollToTop";
+import RecipeList from "./RecipeList";
 
 function Main() {
   const bottomRef = useRef(null);
