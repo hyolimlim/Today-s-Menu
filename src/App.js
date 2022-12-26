@@ -12,26 +12,26 @@ const Main = React.lazy(() => import("./pages/Main/Main"));
 
 function App() {
   return (
-    <RecipeProvider>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <div className="warp">
-          <Header />
-          <Routes>
-            <ErrorBoundary fallback={<Error />}>
+    <ErrorBoundary fallback={<Error />}>
+      <RecipeProvider>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
+          <div className="warp">
+            <Header />
+            <Routes>
               <Route
-                path="/recipe"
+                path="/"
                 element={
                   <Suspense fallback={<MainSkeleton />}>
                     <Main />
                   </Suspense>
                 }
               />
-            </ErrorBoundary>
-            <Route path="/recipe/:id" element={<RecipeDetail />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </RecipeProvider>
+              <Route path="/:id" element={<RecipeDetail />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </RecipeProvider>
+    </ErrorBoundary>
   );
 }
 
