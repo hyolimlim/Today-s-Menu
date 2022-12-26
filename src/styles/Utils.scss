@@ -6,6 +6,7 @@ $desktop: 1024px;
   font-family: "Pretendard-Regular";
   src: url("../assets/fonts/Pretendard-Regular.woff");
   font-style: normal;
+  font-display: block;
 }
 
 @mixin mobile {
