@@ -1,10 +1,14 @@
 import useSWRInfinite from "swr/infinite";
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { RecipeContext } from "../store/RecipeProvider";
 
 export function useGetData() {
-  const ACCESS_KEY = "d1f92fd34ae84af7be22";
-  const url = `http://openapi.foodsafetykorea.go.kr/api/${ACCESS_KEY}/COOKRCP01/json`;
+  const url = `http://openapi.foodsafetykorea.go.kr/api/${process.env.REACT_APP_API_KEY}/COOKRCP01/json`;
+
+  const fetcher = async (url) => {
+    const res = await fetch(url);
+    return res.json();
+  };
 
   const {
     recipe,
@@ -21,17 +25,12 @@ export function useGetData() {
     setIsEndData,
   } = useContext(RecipeContext);
 
-  const fetcher = async (url) => {
-    const res = await fetch(url);
-    return res.json();
-  };
-
   const getKey = (pageIndex, previousPageData) => {
     if (previousPageData && previousPageData.COOKRCP01.row.length === 0)
       return null;
 
-    const start = pageIndex === 0 ? 1 : pageIndex * 8 + 1;
-    const end = pageIndex === 0 ? 8 : pageIndex * 8 + 8;
+    const start = pageIndex === 0 ? 0 : pageIndex * 10 + 1;
+    const end = pageIndex === 0 ? 10 : pageIndex * 10 + 10;
 
     if (!input) {
       return `${url}/${start}/${end}`;

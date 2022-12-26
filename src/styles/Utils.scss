@@ -1,0 +1,27 @@
+$mobile: 767px;
+$tablet: 1023px;
+$desktop: 1024px;
+
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("../assets/fonts/Pretendard-Regular.woff");
+  font-style: normal;
+}
+
+@mixin mobile {
+  @media (max-width: $mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $mobile) and (max-width: $tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $desktop) {
+    @content;
+  }
+}

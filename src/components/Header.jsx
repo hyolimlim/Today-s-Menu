@@ -1,16 +1,20 @@
 import React from "react";
 import "../styles/Design.scss";
-import { CookIcon } from "../assets/Index";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Logo from "../assets/Logo.png";
 
 function Header() {
+  const navigate = useNavigate();
+
   return (
     <header className="header">
-      <div className="logo">
-        <Link to={"/"} className="logo__link">
-          <CookIcon width="25px" height="25px" />
-          <h1>매일 요리</h1>
-        </Link>
+      <div
+        className="logo"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <img src={Logo} alt="logo" />
       </div>
     </header>
   );

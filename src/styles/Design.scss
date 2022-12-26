@@ -1,68 +1,169 @@
-//반응형 화면 크기
-$mobile: 767px;
-$tablet: 1023px;
-$desktop: 1024px;
-
-@font-face {
-  font-family: "Pretendard-Regular";
-  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
-    format("woff");
-  font-weight: 400;
-  font-style: normal;
-}
-
-//사이즈
-@mixin mobile {
-  @media (max-width: $mobile) {
-    @content;
-  }
-}
-
-/*반응형, 브라우저 크기가 768이상, 1023px 이하일때*/
-@mixin tablet {
-  @media (min-width: $mobile) and (max-width: $tablet) {
-    @content;
-  }
-}
-
-/*반응형, 브라우저 크기가 1024px 이상일때*/
-@mixin desktop {
-  @media (min-width: $desktop) {
-    @content;
-  }
-}
+@import "./Utils.scss";
 
 .warp {
   font-family: "Pretendard-Regular";
 }
 
-//Header
 .header {
   width: 100%;
   height: 60px;
   display: flex;
   align-items: center;
-  padding-left: 30px;
+  padding-left: 10px;
   box-sizing: border-box;
-  border-bottom: 1px solid #999;
 }
 
 .logo {
-  width: 200px;
-  &__link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    font-size: 1.5em;
-    font-weight: 500;
-    color: green;
+  width: 150px;
+}
+
+.main {
+  width: 100%;
+  min-height: calc(100vh - 60px);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  &__introduce {
+    width: 100%;
+    padding: 0px 60px 0px 80px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
     h1 {
-      margin-left: 10px;
+      font-size: 1.5em;
+      font-weight: 800;
+    }
+  }
+
+  &__scrollbutton {
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 3px 10px 2px #999;
+    background-color: #5bb318;
+    border-radius: 30px;
+    position: fixed;
+    right: 5%;
+    bottom: 4%;
+    z-index: 1;
+    cursor: pointer;
+  }
+}
+
+.loading {
+  width: 100%;
+  height: 100px;
+}
+
+.recipelist {
+  width: 100%;
+  height: fit-content;
+  padding: 10px 60px 10px 60px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 50px;
+  justify-content: center;
+}
+
+.recipe {
+  cursor: pointer;
+  height: 250px;
+  border-radius: 30px;
+  box-shadow: 0 5px 18px -7px #999;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-decoration-line: none;
+
+  img {
+    width: 100%;
+    height: 60%;
+    border-radius: 30px 30px 0px 0px;
+    object-fit: cover;
+  }
+
+  &__item {
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-decoration: none;
+
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 0.4em;
+      text-overflow: ellipsis;
+      color: #191a19;
+      font-weight: 600;
+    }
+    span {
+      font-size: 1em;
+      color: #191a19;
     }
   }
 }
 
-//레시피 디테일
+.searchbar {
+  width: 50%;
+  min-height: 50px;
+  margin: 30px 0 40px 0;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  border: 1px solid #999;
+  border-radius: 30px;
+
+  &__inputitem {
+    width: 85%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 10px 0px 10px;
+    box-sizing: border-box;
+    ::placeholder {
+      text-align: center;
+      font-size: 1em;
+    }
+
+    select {
+      min-width: 25%;
+      margin-right: 10px;
+      border: 0px;
+      outline: 0px;
+      text-align: center;
+    }
+
+    input {
+      width: 80%;
+      height: 100%;
+      box-sizing: border-box;
+      border: none;
+      font-size: 1em;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  &__icon {
+    width: 15%;
+    height: 30px;
+    border-radius: 0 30px 30px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  @include mobile {
+    width: 90%;
+  }
+}
+
 .recipedetail {
   width: 100%;
   height: calc(100vh - 60px);
@@ -138,7 +239,6 @@ $desktop: 1024px;
   }
 }
 
-//레시피 메뉴얼
 .recipedetail--manual {
   width: 60%;
   height: 100%;
@@ -225,153 +325,5 @@ $desktop: 1024px;
       max-width: 150px;
       margin: 0px 10px 10px 0px;
     }
-  }
-}
-
-//Main
-.main {
-  width: 100%;
-  min-height: calc(100vh - 60px);
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-
-  &__introduce {
-    width: 100%;
-    padding: 0px 60px 0px 80px;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    h1 {
-      font-size: 1.5em;
-      font-weight: 800;
-    }
-  }
-
-  &__scrollbutton {
-    width: 50px;
-    height: 50px;
-    box-shadow: 0 3px 10px 2px #999;
-    background-color: #5bb318;
-    border-radius: 30px;
-    position: fixed;
-    right: 5%;
-    bottom: 4%;
-    z-index: 1;
-    cursor: pointer;
-  }
-}
-
-.loading {
-  width: 100%;
-  height: 100px;
-}
-
-.recipelist {
-  width: 100%;
-  height: fit-content;
-  padding: 10px 60px 10px 60px;
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-template-rows: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 50px;
-  justify-content: center;
-}
-
-.recipe {
-  cursor: pointer;
-  height: 300px;
-  border-radius: 30px;
-  box-shadow: 0 5px 18px -7px #999;
-  text-align: center;
-  text-overflow: ellipsis;
-  text-decoration-line: none;
-
-  img {
-    width: 100%;
-    height: 60%;
-    border-radius: 30px 30px 0px 0px;
-    object-fit: cover;
-  }
-
-  &__item {
-    height: 40%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-decoration: none;
-
-    h1 {
-      font-size: 1.5em;
-      margin-bottom: 0.4em;
-      text-overflow: ellipsis;
-      color: #191a19;
-      font-weight: 600;
-    }
-    span {
-      font-size: 1em;
-      color: #191a19;
-    }
-  }
-}
-
-.searchbar {
-  width: 50%;
-  min-height: 50px;
-  margin: 30px 0 40px 0;
-  padding: 10px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  border: 1px solid #999;
-  border-radius: 30px;
-
-  &__inputitem {
-    width: 85%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0px 10px 0px 10px;
-    box-sizing: border-box;
-    ::placeholder {
-      text-align: center;
-      font-size: 1em;
-    }
-
-    select {
-      min-width: 20%;
-      margin-right: 10px;
-      border: 0px;
-      outline: 0px;
-      text-align: center;
-    }
-
-    input {
-      width: 80%;
-      height: 100%;
-      box-sizing: border-box;
-      border: none;
-      font-size: 1em;
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-
-  &__icon {
-    width: 15%;
-    height: 30px;
-    border-radius: 0 30px 30px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-
-  @include mobile {
-    width: 90%;
   }
 }
