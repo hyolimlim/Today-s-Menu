@@ -19,7 +19,7 @@ function App() {
           <Routes>
             <ErrorBoundary fallback={<Error />}>
               <Route
-                path="/"
+                path="/recipe"
                 element={
                   <Suspense fallback={<MainSkeleton />}>
                     <Main />
@@ -27,7 +27,7 @@ function App() {
                 }
               />
             </ErrorBoundary>
-            <Route path="/:id" element={<RecipeDetail />} />
+            <Route path="/recipe/:id" element={<RecipeDetail />} />
           </Routes>
         </div>
       </BrowserRouter>

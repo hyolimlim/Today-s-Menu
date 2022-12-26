@@ -1,4 +1,10 @@
-import { useContext, useCallback, useEffect, useState, useRef } from "react";
+import React, {
+  useContext,
+  useCallback,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import { useGetData } from "../../hooks/useGetData";
 import { SearchIcon } from "../../assets/Index";
 import "../../styles/Design.scss";
