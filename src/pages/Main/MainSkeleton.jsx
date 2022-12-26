@@ -12,14 +12,16 @@ function MainSkeleton() {
         <h1>레시피 리스트</h1>
       </div>
       <div className="recipelist">
-        <Skeleton height="300px" borderRadius="30px" />
-        <Skeleton height="300px" borderRadius="30px" />
-        <Skeleton height="300px" borderRadius="30px" />
-        <Skeleton height="300px" borderRadius="30px" />
-        <Skeleton height="300px" borderRadius="30px" />
-        <Skeleton height="300px" borderRadius="30px" />
-        <Skeleton height="300px" borderRadius="30px" />
-        <Skeleton height="300px" borderRadius="30px" />
+        <Skeleton height="250px" borderRadius="30px" />
+        <Skeleton height="250px" borderRadius="30px" />
+        <Skeleton height="250px" borderRadius="30px" />
+        <Skeleton height="250px" borderRadius="30px" />
+        <Skeleton height="250px" borderRadius="30px" />
+        <Skeleton height="250px" borderRadius="30px" />
+        <Skeleton height="250px" borderRadius="30px" />
+        <Skeleton height="250px" borderRadius="30px" />
+        <Skeleton height="250px" borderRadius="30px" />
+        <Skeleton height="250px" borderRadius="30px" />
       </div>
     </main>
   );

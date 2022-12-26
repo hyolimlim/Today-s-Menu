@@ -1,8 +1,7 @@
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Search from "./Search";
 import RecipeList from "./RecipeList";
 import { useGetData } from "../../hooks/useGetData";
-import { RecipeContext } from "../../store/RecipeProvider";
 import useObserver from "../../hooks/useObserver";
 import { Loading } from "../../assets/Index";
 import { TopIcon } from "../../assets/Index";
@@ -12,15 +11,8 @@ function Main() {
   const bottomRef = useRef(null);
   const isIntersectiong = useObserver(bottomRef);
   const [isVisible, setIsVisible] = useState(false);
-  const {
-    setSize,
-    size,
-    recipe,
-    isLoadingData,
-    isNodata,
-    isEndData,
-    isLoading,
-  } = useGetData();
+  const { setSize, size, recipe, isNodata, isEndData, isLoading } =
+    useGetData();
 
   const { scrollToTop } = useScrollToTop();
 

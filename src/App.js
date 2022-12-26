@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Notfound from "./pages/Notfound";
 import RecipeDetail from "./pages/RecipeDetail/RecipeDetail";
 import Header from "./components/Header";
 import Error from "./pages/Error";
@@ -14,22 +13,21 @@ const Main = React.lazy(() => import("./pages/Main/Main"));
 function App() {
   return (
     <RecipeProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <div className="warp">
           <Header />
           <Routes>
-            <ErrorBoundary fallback={<Error />}>
-              <Route
-                path="/"
-                element={
+            <Route
+              path="/"
+              element={
+                <ErrorBoundary fallback={<Error />}>
                   <Suspense fallback={<MainSkeleton />}>
                     <Main />
                   </Suspense>
-                }
-              />
-            </ErrorBoundary>
+                </ErrorBoundary>
+              }
+            />
             <Route path="/:id" element={<RecipeDetail />} />
-            <Route element={<Notfound />} />
           </Routes>
         </div>
       </BrowserRouter>

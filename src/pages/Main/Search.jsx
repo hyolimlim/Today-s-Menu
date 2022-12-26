@@ -1,15 +1,13 @@
-import { useContext, useCallback, useEffect, useState, useRef } from "react";
-import { useGetData } from "../../hooks/useGetData";
+import React, { useContext, useCallback, useRef } from "react";
 import { SearchIcon } from "../../assets/Index";
 import "../../styles/Design.scss";
 import { RecipeContext } from "../../store/RecipeProvider";
 
 function Search() {
-  const { setInput, option, setOption } = useContext(RecipeContext);
+  const { setInput, setOption } = useContext(RecipeContext);
   const inputRef = useRef();
   const optionRef = useRef();
 
-  //엔터 누르면 검색 수정
   const onKeyDown = useCallback((e) => {
     if (e.key === "Enter" && e.target.value.trim().length > 0) {
       setInput(inputRef.current.value);
