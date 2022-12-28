@@ -10,6 +10,8 @@ export default function RecipeProvider({ children }) {
   const [isNodata, setIsNodata] = useState(false);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [isEndData, setIsEndData] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState({});
 
   return (
     <RecipeContext.Provider
@@ -28,6 +30,10 @@ export default function RecipeProvider({ children }) {
         setIsLoadingData,
         isEndData,
         setIsEndData,
+        isOpen,
+        setIsOpen,
+        data,
+        setData,
       }}
     >
       {children}

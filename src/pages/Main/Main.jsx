@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, Suspense } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import Search from "./Search";
 import { useGetData } from "../../hooks/useGetData";
 import useObserver from "../../hooks/useObserver";
@@ -6,6 +6,8 @@ import { Loading } from "../../assets/Index";
 import { TopIcon } from "../../assets/Index";
 import useScrollToTop from "../../hooks/useScrollToTop";
 import RecipeList from "./RecipeList";
+import RecipeDetail from "../RecipeDetail/RecipeDetail";
+import { RecipeContext } from "../../store/RecipeProvider";
 
 function Main() {
   const bottomRef = useRef(null);
@@ -34,7 +36,10 @@ function Main() {
     if (isIntersectiong && !isLoading & !isEndData) {
       setSize(() => size + 1);
     }
-  }, [setSize, isIntersectiong, isLoading, isEndData]);
+  }, [isIntersectiong, isLoading, isEndData]);
+
+  //모달부분
+  const { isOpen } = useContext(RecipeContext);
 
   return (
     <main className="main">
@@ -53,7 +58,10 @@ function Main() {
         </div>
       ) : null}
       {!isNodata ? (
-        <RecipeList flatRecipeArr={recipe} />
+        <>
+          {isOpen && <RecipeDetail />}
+          <RecipeList flatRecipeArr={recipe} />
+        </>
       ) : (
         <div>데이터가 없습니다.</div>
       )}

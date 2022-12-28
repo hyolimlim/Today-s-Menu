@@ -64,6 +64,7 @@ export function useGetData() {
   }, [recipe]);
 
   return {
+    data,
     setSize,
     size,
     recipe,
