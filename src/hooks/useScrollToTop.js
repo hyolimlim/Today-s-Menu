@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 function useScrollToTop() {
   const scrollToTop = () => {
     window.scrollTo({

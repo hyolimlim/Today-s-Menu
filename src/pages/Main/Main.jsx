@@ -38,7 +38,6 @@ function Main() {
     }
   }, [isIntersectiong, isLoading, isEndData]);
 
-  //모달부분
   const { isOpen } = useContext(RecipeContext);
 
   return (
