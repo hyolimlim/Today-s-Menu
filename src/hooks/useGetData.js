@@ -46,6 +46,7 @@ export function useGetData() {
       revalidateIfStale: false,
       revalidateFirstPage: false,
       revalidateOnFocus: false,
+      dedupingInterval: 10000,
       suspense: true,
     });
 
@@ -64,6 +65,7 @@ export function useGetData() {
   }, [recipe]);
 
   return {
+    data,
     setSize,
     size,
     recipe,

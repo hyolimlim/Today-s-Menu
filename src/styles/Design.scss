@@ -64,10 +64,16 @@
   padding: 10px 60px 10px 60px;
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(5, minmax(200px, 1fr));
   grid-template-rows: repeat(auto-fill, minmax(250px, 1fr));
-  grid-gap: 50px;
+  grid-gap: 40px;
   justify-content: center;
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include mobile {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .recipe {
@@ -81,7 +87,6 @@
 
   img {
     width: 100%;
-    max-width: 450px;
     height: 60%;
     max-height: 150px;
     border-radius: 30px 30px 0px 0px;
@@ -94,6 +99,9 @@
     flex-direction: column;
     justify-content: center;
     text-decoration: none;
+    box-sizing: border-box;
+    padding: 5px;
+    overflow: hidden;
 
     h1 {
       font-size: 1.5em;
@@ -168,6 +176,16 @@
   }
 }
 
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  backdrop-filter: blur(5px);
+  z-index: 99;
+}
+
 .recipedetail {
   width: 100%;
   height: calc(100vh - 60px);
@@ -181,10 +199,32 @@
     border-radius: 30px;
     display: flex;
     box-shadow: 0 5px 18px -7px #999;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
     @include mobile {
       display: block;
-      top: 15%;
-      left: 40%;
+    }
+    @include tablet {
+      display: block;
+    }
+  }
+
+  &__button {
+    position: absolute;
+    cursor: pointer;
+    right: 40px;
+    top: 15px;
+    z-index: 100;
+
+    @include mobile {
+      right: 20px;
+      top: 15px;
+    }
+    @include tablet {
+      right: 20px;
+      top: 15px;
     }
   }
 }
@@ -199,12 +239,13 @@
   &__img {
     width: 100%;
     height: 70%;
-    object-fit: cover;
     border-radius: 30px 0 0 30px;
     img {
       width: 100%;
       height: 100%;
-      border-radius: 30px 0 0 00px;
+      object-fit: cover;
+      object-position: 50% 50%;
+      border-radius: 30px 0 0 0;
     }
   }
 
@@ -229,6 +270,24 @@
     width: 100%;
     height: 50%;
     border-radius: 30px 30px 0 0;
+
+    img {
+      border-radius: 30px 30px 0 0;
+    }
+    h1 {
+      font-size: 1.5em;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    span {
+      font-size: 0.5em;
+    }
+  }
+  @include tablet {
+    width: 100%;
+    height: 50%;
+    border-radius: 30px 30px 0 0;
+
     img {
       border-radius: 30px 30px 0 0;
     }
@@ -243,12 +302,14 @@
   }
 }
 
-.recipedetail--manual {
+.recipedetail-manual {
   width: 60%;
   height: 100%;
   text-align: center;
   box-sizing: border-box;
   padding: 40px;
+  background-color: #eee;
+  border-radius: 0 30px 30px 0;
 
   h1 {
     font-size: 1.2em;
@@ -267,6 +328,14 @@
     width: 100%;
     height: 50%;
     padding: 10px 10px 15px 10px;
+    border-radius: 0 0 30px 30px;
+  }
+
+  @include tablet {
+    width: 100%;
+    height: 50%;
+    padding: 10px 10px 15px 10px;
+    border-radius: 0 0 30px 30px;
   }
 
   &__intro {
@@ -296,6 +365,21 @@
       }
       overflow: auto;
     }
+
+    @include tablet {
+      width: 100%;
+      height: 20%;
+      margin-bottom: 5px;
+
+      h1 {
+        font-size: 1em;
+        color: #5f8d4e;
+      }
+      p {
+        font-size: 0.8em;
+      }
+      overflow: auto;
+    }
   }
 
   &__steps {
@@ -308,6 +392,18 @@
     }
 
     @include mobile {
+      width: 100%;
+      height: 80%;
+      overflow: auto;
+      h1 {
+        font-size: 1em;
+        color: #5f8d4e;
+      }
+      p {
+        font-size: 0.8em;
+      }
+    }
+    @include tablet {
       width: 100%;
       height: 80%;
       overflow: auto;
